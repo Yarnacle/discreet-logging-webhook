@@ -11,15 +11,30 @@ app.listen(port,() => {
 	console.log(`Server listening on port ${port}`);
 });
 app.get('/',(req,res) => {
+	const client = req.headers['x-origin-client'];
+
 	const id = req.query.id;
-	const content = req.body;
+	const content = req.query.content;
+
+	if (id == undefined || content == undefined) {
+		console.log('Undefined field');
+		return res.status(404).send();
+	}
+
+	const type = client ? client:'Browser';
+
 	const ip = req.ip;
 	const timestamp = moment().tz('America/Chicago').format();
-	fs.appendFile('server.log',`[${timestamp}]-[${ip}]-[${id}]\n${content}\n`,error => {
+	fs.appendFile('server.log',`${type} [${timestamp}]-[${ip}]-[${id}]\n${content}\n`,error => {
 		if (error) {
 			throw error;
 		}
 		console.log(`Logged request from ${ip}`);
 	});
-	return res.status(404).send('Not found');
-});
+
+
+	if (!client) {
+		return res.status(200).send('<center><h1>404 Not Found</h1></center>');
+	}
+	return res.status(200).send();
+})
