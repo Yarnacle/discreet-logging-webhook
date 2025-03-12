@@ -60,6 +60,7 @@ app.get('/',(req,res) => {
 
 	const ip = req.ip;
 	const timestamp = moment().tz('America/Chicago').format();
+	fs.appendFile('server.log',`${type} [${timestamp}]-[${ip}]-[${id}]\n${content}\n\n`,error => {
 	// log to file
 	fs.appendFile('server.log',`${type} [${timestamp}]-[${ip}]-[${id}]\n${content}\n`,error => {
 		if (error) {
