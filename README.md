@@ -1,1 +1,1 @@
-discrete GET request logging server
+discreet GET request logging server
