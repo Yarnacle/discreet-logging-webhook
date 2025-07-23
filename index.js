@@ -74,7 +74,7 @@ app.get('/',(req,res) => {
 			if (!channel) {
 				channel = await createChannel(type);
 			}
-			channel.send(`\`${id}\`\n\`\`\`${content}\`\`\``);
+			channel.send(`\`${ip}\`   \`${id}\`\n\`\`\`${content}\`\`\``);
 		});
 	}
 
