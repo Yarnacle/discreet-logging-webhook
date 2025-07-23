@@ -8,7 +8,7 @@ import moment from 'moment-timezone';
 import { Client, Events, GatewayIntentBits,ChannelType } from 'discord.js';
 
 import config from './config.js';
-const { token,guildId,parentId } = config;
+const { token,guildId,parentId,userId } = config;
 
 const discClient = new Client({
 	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions],
@@ -50,6 +50,7 @@ app.get('/',(req,res) => {
 	const id = req.query.id;
 	const content = req.query.content;
 	const internal = req.query.internal;
+	const ping = req.query.ping;
 
 	if (id == undefined || content == undefined) {
 		console.log('Undefined field');
@@ -74,7 +75,7 @@ app.get('/',(req,res) => {
 			if (!channel) {
 				channel = await createChannel(type);
 			}
-			channel.send(`\`${ip}\`   \`${id}\`\n\`\`\`${content}\`\`\``);
+			channel.send(`\`${ip}\`   \`${id}\`${ping ? '   <@' + userId + '>':''}\n> ${content}`);
 		});
 	}
 
