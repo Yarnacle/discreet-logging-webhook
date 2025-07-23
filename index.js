@@ -75,7 +75,7 @@ app.get('/',(req,res) => {
 			if (!channel) {
 				channel = await createChannel(type);
 			}
-			channel.send(`\`${ip}\`   \`${id}\`${ping ? '   <@' + userId + '>':''}\n> ${content}`);
+			channel.send(`\`${ip}\`   \`${id}\`${ping ? '   <@' + userId + '>':''}\n>>> ${content}`);
 		});
 	}
 
