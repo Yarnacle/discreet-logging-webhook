@@ -17,5 +17,5 @@ Send requests to /
 ### Query params
 * ``id`` (required) - ID
 * ``content`` (required) - text
-* ``internal`` - don't log to discord
-* ``ping`` - ping the user identified by ``userId``
+* ``internal`` - true/false don't log to discord
+* ``ping`` - true/false ping the user identified by ``userId``
