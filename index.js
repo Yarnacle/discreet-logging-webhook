@@ -50,7 +50,7 @@ app.get('/',(req,res) => {
 	const id = req.query.id;
 	const content = req.query.content;
 	const internal = req.query.internal;
-	const ping = req.query.ping;
+	const ping = req.query.ping == 'true';
 
 	if (id == undefined || content == undefined) {
 		console.log('Undefined field');
