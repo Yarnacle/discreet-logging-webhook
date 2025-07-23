@@ -60,9 +60,8 @@ app.get('/',(req,res) => {
 
 	const ip = req.ip;
 	const timestamp = moment().tz('America/Chicago').format();
-	fs.appendFile('server.log',`${type} [${timestamp}]-[${ip}]-[${id}]\n${content}\n\n`,error => {
 	// log to file
-	fs.appendFile('server.log',`${type} [${timestamp}]-[${ip}]-[${id}]\n${content}\n`,error => {
+	fs.appendFile('server.log',`${type} [${timestamp}]-[${ip}]-[${id}]\n${content}\n\n`,error => {
 		if (error) {
 			throw error;
 		}
@@ -83,4 +82,4 @@ app.get('/',(req,res) => {
 		return res.status(200).send('<center><h1>404 Not Found</h1></center>');
 	}
 	return res.status(200).send();
-})
+});
