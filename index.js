@@ -61,7 +61,8 @@ app.get('/',async (req,res) => {
 
 	const ip = req.ip;
 	const response = await fetch(`http://ip-api.com/json/${ip}`);
-	const asname = await response.json();
+	const data = await response.json();
+	const asname = data.asname;
 
 	const timestamp = moment().tz('America/Chicago').format();
 	// log to file
