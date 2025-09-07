@@ -33,7 +33,7 @@ async function checkChannelExists(name) {
 	await guild.channels.fetch();
 
 	const existingChannel = guild.channels.cache.find(
-		(ch) => ch.name.toLowerCase() === name.toLowerCase() && ch.type === ChannelType.GuildText
+		(ch) => ch.name === name.replace(' ','-').toLowerCase() && ch.type === ChannelType.GuildText
 	);
 	return existingChannel;
 }
