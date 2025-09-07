@@ -60,15 +60,21 @@ app.get('/',async (req,res) => {
 	const type = reqClient ? reqClient:'Browser';
 
 	const ip = req.ip;
-	const asname = (await ((await fetch(`http://ip-api.com/json/${ip}?fields=asname`)).json())).asname;
+	const data = (await fetch(`http://ip-api.com/json/${ip}?fields=asname,status,message,hosting`));
+	const json = await data.json();
+	if (json.status != 'success') {
+		console.log(json.message);
+	}
+	const asname = json.asname;
+	const hosting = json.hosting;
+	const ipString = `${asname}${hosting ? ' hosting':''}/${ip}`;
 
 	const timestamp = moment().tz('America/Chicago').format();
 	// log to file
-	fs.appendFile('server.log',`${type} [${asname}/${timestamp}]-[${ip} ]-[${id}]\n${content}\n\n`,error => {
+	fs.appendFile('server.log',`${timestamp} ${type} [${ipString}]-[${id}]\n${content}\n\n`,error => {
 		if (error) {
 			throw error;
 		}
-		console.log(`Logged request from ${ip}`);
 	});
 
 	if (!internal) {
@@ -77,7 +83,7 @@ app.get('/',async (req,res) => {
 			if (!channel) {
 				channel = await createChannel(type);
 			}
-			channel.send(`\`${asname}/${ip}\`   \`${id}\`${ping ? '   <@' + userId + '>':''}\n>>> ${content}`);
+			channel.send(`\`${ipString}\`   \`${id}\`${ping ? '   <@' + userId + '>':''}\n>>> ${content}`);
 		});
 	}
 
