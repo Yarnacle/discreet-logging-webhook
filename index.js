@@ -44,7 +44,7 @@ const port = 1095;
 app.listen(port,() => {
 	console.log(`Server listening on port ${port}`);
 });
-app.get('/',(req,res) => {
+app.get('/',async (req,res) => {
 	const reqClient = req.headers['x-origin-client'];
 
 	const id = req.query.id;
@@ -60,9 +60,12 @@ app.get('/',(req,res) => {
 	const type = reqClient ? reqClient:'Browser';
 
 	const ip = req.ip;
+	const response = await fetch(`http://ip-api.com/json/${ip}`);
+	const asname = await response.json();
+
 	const timestamp = moment().tz('America/Chicago').format();
 	// log to file
-	fs.appendFile('server.log',`${type} [${timestamp}]-[${ip}]-[${id}]\n${content}\n\n`,error => {
+	fs.appendFile('server.log',`${type} [${asname}/${timestamp}]-[${ip} ]-[${id}]\n${content}\n\n`,error => {
 		if (error) {
 			throw error;
 		}
@@ -75,7 +78,7 @@ app.get('/',(req,res) => {
 			if (!channel) {
 				channel = await createChannel(type);
 			}
-			channel.send(`\`${ip}\`   \`${id}\`${ping ? '   <@' + userId + '>':''}\n>>> ${content}`);
+			channel.send(`\`${asname}/${ip}\`   \`${id}\`${ping ? '   <@' + userId + '>':''}\n>>> ${content}`);
 		});
 	}
 
